@@ -1,0 +1,16 @@
+Merhaba 
+Size gönderilen proje dosyasını ZIP olarak indirin ve bir klasöre çıkarın.
+Öncelikle Node.js yüklemeniz gerekir.
+Sonrasında Komut satırında proje klasörüne gidin
+Node.js yüklediyseniz npm onunla beraber gelir ancak herhangi bir durum yüzünden yarn kullanmanız gerekirse kurulum komutu şudur:
+npm install -g yarn
+Aşağıdaki komutlardan birini kullanarak bağımlılıkları yükleyin:
+npm install
+yarn install
+Projeye API anahtarı zaten entegre edilmiştir, bu nedenle ekstra bir işlem yapmanıza gerek yoktur.
+npm kullanıyorsanız: npm start
+yarn kullanıyorsanız yarn start ile terminalde projenin dosyası açık olacak şekilde çalıştırın.
+Proje, varsayılan olarak http://localhost:3000 adresinde çalışacaktır.
+Tarayıcınızda bu adrese giderek uygulamayı görüntüleyebilirsiniz.
+CORS politikasından dolayı API'ye doğrudan erişim sağlanamadığından, proxy ayarları kodun içinde hazır şekilde eklenmiştir.
+Bu nedenle herhangi bir ekstra işlem yapmadan projeyi doğrudan çalıştırabilirsiniz.
