@@ -6,10 +6,10 @@ function Filters({ searchTerm, severityFilter, assetTypeFilter, onSearchChange, 
     <Box
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" }, // Mobilde dikey, büyük ekranlarda yatay
+        flexDirection: { xs: "column", sm: "row" }, 
         gap: "16px",
         marginBottom: "16px",
-        alignItems: { xs: "stretch", sm: "center" }, // Mobilde tam genişlik
+        alignItems: { xs: "stretch", sm: "center" }, 
       }}
     >
       {/* Search Bar */}
@@ -19,14 +19,14 @@ function Filters({ searchTerm, severityFilter, assetTypeFilter, onSearchChange, 
         value={searchTerm}
         onChange={onSearchChange}
         sx={{
-          width: { xs: "100%", sm: 400 }, // Mobilde tam genişlik, büyük ekranlarda sabit genişlik
+          width: { xs: "100%", sm: 400 }, 
         }}
       />
 
       {/* Severity Dropdown */}
       <FormControl
         sx={{
-          minWidth: { xs: "100%", sm: 200 }, // Mobilde tam genişlik, büyük ekranlarda sabit genişlik
+          minWidth: { xs: "100%", sm: 200 }, 
         }}
       >
         <InputLabel>Severity</InputLabel>
@@ -42,7 +42,7 @@ function Filters({ searchTerm, severityFilter, assetTypeFilter, onSearchChange, 
       {/* Asset Type Dropdown */}
       <FormControl
         sx={{
-          minWidth: { xs: "100%", sm: 200 }, // Mobilde tam genişlik, büyük ekranlarda sabit genişlik
+          minWidth: { xs: "100%", sm: 200 }, 
         }}
       >
         <InputLabel>Asset Type</InputLabel>

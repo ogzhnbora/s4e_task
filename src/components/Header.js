@@ -1,16 +1,16 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
-import logo from "../assets/logo.png"; // Logo dosyasını doğru yolda import edin
+import logo from "../assets/logo.png"; 
 
 const Header = () => {
   return (
     <AppBar
       position="static"
       sx={{
-        backgroundColor: "background.default", // Temadan gelen arka plan rengi
-        color: "text.primary", // Temadan gelen yazı rengi
-        boxShadow: "none", // İsteğe bağlı: Gölgeyi kaldırır
-        borderColor: "divider", // Temadan gelen sınır rengi
+        backgroundColor: "background.default", 
+        color: "text.primary", 
+        boxShadow: "none", 
+        borderColor: "divider",
       }}
     >
       <Toolbar sx={{ display: "flex", alignItems: "center" }}>

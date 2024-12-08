@@ -3,7 +3,6 @@ import axios from "axios";
 const API_ENDPOINT = "/api/scan/list";
 const API_TOKEN = "dabEb8qt3lYKz5nGfgPVgx9RxSq9DBjWLuOLkmtCToV4mQhQQcAPXX-MPuFJDB94bxbDJvFv6YpybTd6S3kLdQ";
 
-// İlk 400 veriyi alır
 export const fetchInitialTools = async () => {
   let allData = [];
   for (let page = 1; page <= 4; page++) {
@@ -18,17 +17,17 @@ export const fetchInitialTools = async () => {
       console.log(`Page ${page} - Data Length: ${data.length}`);
       console.log(`Total fetched data length: ${allData.length + data.length}`);
 
-      if (!data.length) break; // Eğer veri yoksa durdur
-      allData = [...allData, ...data]; // Gelen verileri ekle
+      if (!data.length) break; 
+      allData = [...allData, ...data]; 
     } catch (error) {
       console.error("Error fetching initial tools:", error);
-      break; // Hata durumunda durdur
+      break; 
     }
   }
   return allData;
 };
 
-// Kalan verileri arka planda yükler
+
 export const fetchRemainingTools = async (startingPage = 5) => {
   let allData = [];
   let page = startingPage;
@@ -45,17 +44,16 @@ export const fetchRemainingTools = async (startingPage = 5) => {
       console.log(`Page ${page} - Data Length: ${data.length}`);
       console.log(`Total fetched data length: ${allData.length + data.length}`);
 
-      if (!data.length) break; // Eğer veri yoksa durdur
-      allData = [...allData, ...data]; // Gelen verileri ekle
-      page++; // Sonraki sayfa
+      if (!data.length) break; 
+      allData = [...allData, ...data]; 
+      page++; 
     } catch (error) {
-      break; // Hata durumunda durdur
+      break; 
     }
   }
   return allData;
 };
 
-// Belirli bir sayfanın verisini alır
 export const fetchPage = async (page) => {
   try {
     const response = await axios.post(API_ENDPOINT, {

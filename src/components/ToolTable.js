@@ -3,9 +3,9 @@ import { Box, Table, TableBody, TableCell, TableHead, TableRow, Paper, Typograph
 import { getSeverityDetails } from "../utils/helpers";
 
 function ToolTable({ tools }) {
-  const theme = useTheme(); // Temayı al
+  const theme = useTheme(); 
 
-  const isMobile = window.innerWidth <= 600; // Mobil kontrolü
+  const isMobile = window.innerWidth <= 600; // Mobil
 
   return (
     <Box sx={{ overflowX: "auto", margin: "0 auto", padding: "16px" }}>
@@ -14,7 +14,7 @@ function ToolTable({ tools }) {
           overflowX: "auto",
           borderRadius: "8px",
           boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-          backgroundColor: theme.palette.background.paper, // Tema arka planına göre ayarla
+          backgroundColor: theme.palette.background.paper, 
         }}
       >
         {isMobile ? (
@@ -25,11 +25,11 @@ function ToolTable({ tools }) {
               <Box
                 key={index}
                 sx={{
-                  border: `1px solid ${theme.palette.divider}`, // Tema bölücü rengi
+                  border: `1px solid ${theme.palette.divider}`, 
                   borderRadius: "8px",
                   padding: "16px",
                   marginBottom: "16px",
-                  backgroundColor: theme.palette.background.default, // Tema varsayılan arka plan
+                  backgroundColor: theme.palette.background.default, 
                 }}
               >
                 <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
@@ -57,15 +57,14 @@ function ToolTable({ tools }) {
             );
           })
         ) : (
-          // Masaüstü görünüm: Tablo formatında göster
           <Table sx={{ minWidth: 500, borderCollapse: "separate", borderSpacing: "0 8px" }}>
             <TableHead>
               <TableRow
                 sx={{
-                  backgroundColor: theme.palette.background.default, // Tema arka planına göre ayarla
+                  backgroundColor: theme.palette.background.default, 
                   "& th": {
                     fontWeight: "bold",
-                    color: theme.palette.text.primary, // Tema metin rengi
+                    color: theme.palette.text.primary, 
                     textAlign: "left",
                     padding: "12px",
                   },
@@ -83,11 +82,11 @@ function ToolTable({ tools }) {
                   <TableRow
                     key={index}
                     sx={{
-                      backgroundColor: theme.palette.background.paper, // Tema arka planına göre ayarla
+                      backgroundColor: theme.palette.background.paper, 
                       boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
                       borderRadius: "8px",
                       "&:hover": {
-                        backgroundColor: theme.palette.action.hover, // Hover etkisi temaya göre
+                        backgroundColor: theme.palette.action.hover,
                       },
                     }}
                   >
@@ -95,7 +94,7 @@ function ToolTable({ tools }) {
                       sx={{
                         padding: "12px",
                         fontWeight: "bold",
-                        color: theme.palette.text.primary, // Tema metin rengi
+                        color: theme.palette.text.primary, 
                       }}
                     >
                       {tool.name || "N/A"}
@@ -103,7 +102,7 @@ function ToolTable({ tools }) {
                     <TableCell
                       sx={{
                         padding: "12px",
-                        color: theme.palette.text.secondary, // Tema ikincil metin rengi
+                        color: theme.palette.text.secondary,
                         fontSize: "0.95rem",
                       }}
                     >

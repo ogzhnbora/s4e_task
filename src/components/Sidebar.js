@@ -12,9 +12,9 @@ import {
 import { Dashboard, Settings, BarChart, Info, Brightness7, Brightness4, Menu } from "@mui/icons-material";
 
 const Sidebar = ({ isDarkTheme, toggleTheme }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // Mobil Drawer kontrolü
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
 
-  // Masaüstü Sidebar
+  
   const desktopSidebar = (
     <Box
       sx={{
@@ -22,7 +22,7 @@ const Sidebar = ({ isDarkTheme, toggleTheme }) => {
         backgroundColor: "background.paper",
         padding: "16px",
         height: "100%",
-        display: { xs: "none", md: "flex" }, // Mobilde gizle, masaüstünde göster
+        display: { xs: "none", md: "flex" },
         flexDirection: "column",
         justifyContent: "space-between",
       }}
@@ -30,15 +30,13 @@ const Sidebar = ({ isDarkTheme, toggleTheme }) => {
       <SidebarContent toggleTheme={toggleTheme} isDarkTheme={isDarkTheme} />
     </Box>
   );
-
-  // Mobil Drawer (Hamburger Menü)
   const mobileSidebar = (
     <Drawer
       anchor="left"
       open={isDrawerOpen}
       onClose={() => setIsDrawerOpen(false)}
       sx={{
-        display: { xs: "block", md: "none" }, // Mobilde göster, masaüstünde gizle
+        display: { xs: "block", md: "none" },
         "& .MuiDrawer-paper": { width: "300px" },
       }}
     >
@@ -48,7 +46,6 @@ const Sidebar = ({ isDarkTheme, toggleTheme }) => {
 
   return (
     <>
-      {/* Mobil Hamburger Menü */}
       <IconButton
         onClick={() => setIsDrawerOpen(true)}
         sx={{ display: { xs: "block", md: "none" }, position: "absolute", top: "70px", left: "16px" }}
@@ -61,8 +58,6 @@ const Sidebar = ({ isDarkTheme, toggleTheme }) => {
     </>
   );
 };
-
-// Sidebar İçeriği (Hem Masaüstü hem Mobil için ortak)
 const SidebarContent = ({ isDarkTheme, toggleTheme }) => (
   <Box
     sx={{
