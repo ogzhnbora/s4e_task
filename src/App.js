@@ -4,7 +4,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Filters from "./components/Filters";
 import ToolTable from "./components/ToolTable";
 import Pagination from "./components/Pagination";
-import { fetchPage } from "./api/api";
+import { fetchInitialTools } from "./api/api";
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import { getSeverityDetails } from "./utils/helpers";
@@ -18,75 +18,67 @@ function App() {
   const [assetTypeFilter, setAssetTypeFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [totalCount, setTotalCount] = useState(0); // Total count API'den alınacak
 
-  const totalCount = 7639;
   const itemsPerPage = 15;
-  const totalPages = Math.ceil(filteredTools.length / itemsPerPage);
-
-  useEffect(() => {
-    const savedSeverityFilter = localStorage.getItem("severityFilter") || "";
-    const savedAssetTypeFilter = localStorage.getItem("assetTypeFilter") || "";
-    const savedSearchTerm = localStorage.getItem("searchTerm") || "";
-
-    setSeverityFilter(savedSeverityFilter);
-    setAssetTypeFilter(savedAssetTypeFilter);
-    setSearchTerm(savedSearchTerm);
-  }, []);
 
   useEffect(() => {
     const loadInitialData = async () => {
       setFetching(true);
+      console.log("Fetching data for page:", currentPage);
       try {
-        for (let page = 1; page <= 4; page++) {
-          const data = await fetchPage(page);
-          setAllTools((prev) => [...prev, ...data]);
-          setFilteredTools((prev) => [...prev, ...data]);
-        }
-        loadRemainingData(5);
+        const { tools = [], totalCount: apiTotalCount = 0 } = await fetchInitialTools(currentPage);
+    
+        console.log("total count from API:", apiTotalCount);
+    
+        setAllTools((prevTools) => [...prevTools, ...tools]); // Önceki verilere ekleme
+        setFilteredTools((prevTools) => [...prevTools, ...tools]);
+        setTotalCount(apiTotalCount || 0);
       } catch (error) {
-        console.error("Error loading initial data:", error);
+        console.error("Error fetching initial tools:", error);
+        setAllTools([]);
+        setFilteredTools([]);
       } finally {
         setFetching(false);
       }
     };
-
-    const loadRemainingData = async (startingPage) => {
-      let page = startingPage;
-
-      while (page <= Math.ceil(totalCount / 100)) {
-        const data = await fetchPage(page);
-        if (!data.length) break;
-        setAllTools((prev) => [...prev, ...data]);
-        setFilteredTools((prev) => [...prev, ...data]);
-        page++;
-      }
-    };
-
-    loadInitialData();
-  }, []);
-
+    
+    if (!isNaN(currentPage) && currentPage > 0) {
+      loadInitialData();
+    } else {
+      console.error("Invalid page number:", currentPage);
+    }
+  }, [currentPage]);
   useEffect(() => {
-    let data = allTools;
-
-    if (severityFilter) {
-      data = data.filter((tool) => getSeverityDetails(tool.score).label === severityFilter);
-    }
-    if (assetTypeFilter) {
-      data = data.filter((tool) => tool.asset_type === assetTypeFilter);
-    }
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      data = data.filter(
-        (tool) =>
-          (tool.name && tool.name.toLowerCase().includes(term)) ||
-          (tool.mini_desc && tool.mini_desc.toLowerCase().includes(term)) ||
-          (tool.asset_type && tool.asset_type.toLowerCase().includes(term))
-      );
-    }
-
-    setFilteredTools(data);
-  }, [severityFilter, assetTypeFilter, searchTerm, allTools]);
-
+    const updateFilteredTools = () => {
+      let data = allTools;
+  
+      if (severityFilter) {
+        console.log("Applying severity filter:", severityFilter);
+        data = data.filter((tool) => getSeverityDetails(tool.score).label === severityFilter);
+      }
+      if (assetTypeFilter) {
+        console.log("Applying asset type filter:", assetTypeFilter);
+        data = data.filter((tool) => tool.asset_type === assetTypeFilter);
+      }
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        console.log("Applying search term filter:", searchTerm);
+        data = data.filter(
+          (tool) =>
+            (tool.name && tool.name.toLowerCase().includes(term)) ||
+            (tool.mini_desc && tool.mini_desc.toLowerCase().includes(term)) ||
+            (tool.asset_type && tool.asset_type.toLowerCase().includes(term))
+        );
+      }
+  
+      console.log("Filtered Tools:", data);
+      setFilteredTools(data);
+    };
+  
+    updateFilteredTools();
+  }, [currentPage, allTools, severityFilter, assetTypeFilter, searchTerm]);
+  
   const handleSeverityChange = (value) => {
     setSeverityFilter(value);
     localStorage.setItem("severityFilter", value);
@@ -102,10 +94,14 @@ function App() {
     localStorage.setItem("searchTerm", value);
   };
 
-  const paginatedTools = filteredTools.slice(
+  const totalPages = totalCount > 0 ? Math.ceil(totalCount / itemsPerPage) : 1;
+  console.log("Total Pages:", totalPages); // Debug log  
+  const paginatedTools = (filteredTools || []).slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
+    
   );
+  console.log("Paginated Tools for Current Page:", paginatedTools);
 
   const toggleTheme = () => {
     setIsDarkTheme((prev) => !prev);
@@ -125,13 +121,13 @@ function App() {
         <Box display="flex" flexGrow={1} overflow="hidden">
           <Sidebar isDarkTheme={isDarkTheme} toggleTheme={toggleTheme} />
           <Box flexGrow={1} padding="16px" overflow="auto">
-          <Typography
+            <Typography
               variant="h5"
               sx={{
                 fontWeight: "bold",
                 marginBottom: "16px",
-                textAlign: "left", // Sola hizalama
-                marginLeft: "16px", // Sol boşluk
+                textAlign: "left",
+                marginLeft: "16px",
               }}
             >
               Free Tools
@@ -145,12 +141,12 @@ function App() {
               onAssetTypeChange={(e) => handleAssetTypeChange(e.target.value)}
             />
             <ToolTable tools={paginatedTools} />
-
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onNextPage={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               onPreviousPage={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+
             />
           </Box>
         </Box>
